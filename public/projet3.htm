@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+<head>   
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <title>Gestion des succursales par Jean Turgeon</title>
+   
+   <!-- Insertion d’un fichier contenant une feuille de style -->
+   <link rel="stylesheet" type="text/css" href="./stylesheets/styleProjet2.css" />
+
+   <!-- Insertion des librairies -->      
+   <script type="text/javascript" src="./javascripts/libUtilitaires.js"></script>
+   <script type="text/javascript" src="./javascripts/libValidationBaseER.js"></script>
+   <script type="text/javascript" src="./javascripts/projet3.js"></script>
+   
+</head>
+
+<body onload="initialiseInterface(true, false, false); initialiseIdentifiant(); masqueB('divPanneauTrace', false);">
+   
+   <!-- divEntete: FIXE -->
+   <div id="divEntete" class="sTexteCentre sDivSansColonne sEntete">
+        <p> 
+            <span class="sTitreApp">
+                Gestion des succursales<br />
+            </span> par 
+            <span class="sAuteurApp">
+                Jean Turgeon
+            </span> 
+       </p>
+    </div>
+
+     <!-- divIdentification (1re partie du traitement)  -->
+      <div id="divIdentification" class="sDivSansColonne" >
+         <p class="sTitreSection">
+            Identifiez-vous !
+         </p>
+         <table>
+            <tr>
+              <td>Identifiant: </td>
+              <td><input id="tbMatricule" name="tbMatricule" type="text" class="sMatricule" maxlength="7" value="" /></td>
+              <td>
+                  <input id="btnSouvenir" name="btnSouvenir" type="button" value="Se souvenir de moi" onclick="enregistreIdentifiant()" />
+                  <input id="btnNonSouvenir" name="btnNonSouvenir" type="button" value="Ne plus se souvenir de moi" onclick="detruitIdentifiant()" />
+             </td>
+            </tr>
+            <tr>
+              <td>Mot de passe:</td> 
+              <td><input id="tbMotDePasse" name="tbMotDePasse" type="password" class="sMotDePasse" maxlength="11" value="" /></td>
+              <td><input id="btnConnexion" name="btnConnexion" type="button" value="Connexion" onclick="ajax_tenteConnexion();" /></td>
+            </tr>
+            <tr>
+              <td colspan="3" class="sMessage"><span id="lblMessageConnexion"></span><br /></td>
+            </tr>
+         </table>
+      </div>
+
+      <!-- divOperationsSuccursales (2e partie du traitement) -->
+      <div id="divOperationsSuccursales" class="sDivAvecColonne">
+         <p class="sTitreSection">
+            Opérations sur les succursales<br /><br />
+            <input id="btnDeconnexion" name="btnDeconnexion" type="button" value="Déconnexion" onclick="deconnexion()" />
+            <input id="btnLister" name="btnLister" type="button" value="Lister" onclick="ajax_afficheListeSuccursales()" />
+            <input id="btnReinitialiser" name="btnReinitialiser" type="button" value="Réinitialiser" onclick="ajax_reinitialiseSuccursales()" />
+         </p>
+
+         <!-- 1. Ajout d'une succursale ou modification des informations d'une succursale -->
+        <p>
+        <table id="tabAjoutModification">
+            <tr>
+                <td colspan="3" class="sTitreSousSection">AJOUT/MODIFICATION D'UNE SUCCURSALE<br /><br /></td>
+            </tr>
+            <tr>
+                <td>Ville:</td>
+                <td colspan="2">
+                    <input id="tbVilleAjout" name="tbVilleAjout" type="text" class="sVille" maxlength="20" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>Budget:</td>
+                <td>
+                    <input id="tbBudgetAjout" name="tbBudgetAjout" type="text" class="sBudget" maxlength="7" value="" />&nbsp;$
+                </td>
+                <td>
+                    <input id="btnAjout" name="btnAjout" type="button" value="Soumettre" onclick="ajax_tenteAjoutModificationSuccursale()" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="sMessage">
+                    <span id="lblMessageAjout"></span>
+                </td>
+                <td>
+                    <input id="btnEffacerAjout" name="btnEffacerAjout" type="button" value="&nbsp;&nbsp;Effacer&nbsp;&nbsp;" onclick="effacerAjoutModification()" />
+                </td>
+            </tr>
+        </table>
+        </p>
+
+        <!-- 2. Retrait d'une succursale -->
+         <p>
+         <table id="tabRetrait">
+            <tr>
+               <td colspan="3" class="sTitreSousSection">RETRAIT D'UNE SUCCURSALE<br /><br /></td>
+            </tr>
+            <tr>
+               <td> Ville:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+               <td>
+                  <input id="tbVilleRetrait" name="tbVilleRetrait" type="text" class="sVille" maxlength="20" value="" />
+               </td>
+               <td>
+                  <input id="btnRetrait" name="btnRetrait" type="button" value="Soumettre" onclick="ajax_tenteRetraitSuccursale()" />
+              </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="sMessage">
+                    <span id="lblMessageRetrait"></span>
+               </td>  
+               <td>
+                    <input id="btnEffacerRetrait" name="btnEffacerRetrait" type="button" value="&nbsp;&nbsp;Effacer&nbsp;&nbsp;" onclick="effacerRetrait()" />
+               </td>
+            </tr>
+         </table>
+         </p>
+
+         <!-- 3. Affichage du budget d'une succursale -->
+         <p>
+         <table id="tabVisualisation">
+            <tr>
+               <td colspan="3" class="sTitreSousSection">AFFICHAGE DU BUDGET D'UNE SUCCURSALE<br /><br /></td>
+            </tr>
+            <tr>
+               <td> Ville:</td>
+               <td>
+                  <input id="tbVilleBudgetVisualisation" name="tbVilleBudgetVisualisation" type="text" class="sVille" maxlength="20" value="" />
+               </td>
+           </tr>
+            <tr>
+               <td>&nbsp;</td>
+               <td class="sBudgetVisualisation">
+                  Budget:&nbsp;<span id="lblBudgetVisualisation"></span>&nbsp;$
+               </td>
+               <td>
+                  <input id="btnVisualisation" name="btnVisualisation" type="button" value="Soumettre" onclick="ajax_tenteVisualisationBudgetSuccursale()" />
+               </td>
+            </tr>
+             <tr>
+                <td colspan="2" class="sMessage">
+                    <span id="lblMessageBudgetVisualisation"></span><br />
+               </td>  
+               <td>
+                    <input id="btnEffacerBudgetVisualisation" name="btnEffacerBudgetVisualisation" type="button" value="&nbsp;&nbsp;Effacer&nbsp;&nbsp;" onclick="effacerBudgetVisualisation()" />
+               </td>
+            </tr>
+         </table>
+         </p>
+         
+    </div>
+
+    <!-- divListeSuccursales (2e partie du traitement) -->
+     <div id="divSuccursales" class="sDivAvecColonne">
+         <p class="sTitreSection">
+            Succursale(s) enregistrée(s) par<br />
+            <span id="lblNomComplet" class="sUtilisateurApp"></span>
+         </p>
+          <p id="lblSuccursales" class="sMessage"></p>
+     </div>
+
+     <!-- divPiedDePage: FIXE -->
+     <div id="divPiedDePage" class="sDivSansColonne sPiedDePage">
+        <p>
+            <a href="http://www.cgodin.qc.ca">
+                <img src="./images/logoCGG.jpg" alt="logoCGG" />
+            </a> 
+ 			<a href="http://www.cgodin.qc.ca/programme/techniques-informatique/">
+	           Département d'informatique du Cégep Gérald-Godin
+	        </a> <br />
+            &copy;&nbsp;<span class="sAuteurApp">Jean Turgeon</span>&nbsp;2022
+        </p>
+    </div>
+
+    <!-- divPanneauTrace: FIXE -->
+    <div id="divPanneauTrace" class="sDivSansColonne">
+          <p class="sTrace">
+            Requête: <span id="lblRequete"></span><br />
+            Réponse: <span id="lblReponse"></span><br />
+            Cookie: <script type="text/javascript"> document.write(document.cookie) </script>
+          </p>
+    </div>  
+</body>
+</html>

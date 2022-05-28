@@ -1,0 +1,14 @@
+{
+    "succursales": [
+        {
+            "matricule": "0033245",
+            "ville": "Montreal",
+            "budget": "200000"
+        },
+        {
+            "matricule": "0033245",
+            "ville": "Laval",
+            "budget": "200000"
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "students": [
+        {
+            "id": "1",
+            "matricule": "0033245",
+            "firstname": "Jean",
+            "lastname": "Turgeon",
+            "email": "j.turgeon@cgodin.qc.ca",
+            "password": "Secret38718"
+        },
+        {
+            "id": "2",
+            "matricule": "3011111",
+            "firstname": "Roger",
+            "lastname": "Hudon",
+            "email": "r.hudon@cgodin.qc.ca",
+            "password": "Secret38718"
+        },       
+        {
+            "id": "3",
+            "matricule": "3022222",
+            "firstname": "Hektor",
+            "lastname": "Bienvenue",
+            "email": "h.bienvenue@cgodin.qc.ca",
+            "password": "Secret38718"
+        }
+    ]
+}
