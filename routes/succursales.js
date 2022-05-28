@@ -35,10 +35,10 @@ router.post('/succursale-liste', (req, res) => {
     const tabSuccursales = objSuccursales.succursales
     const filteredSuccursales = tabSuccursales.filter(succursale => succursale.matricule === matricule)
     if(filteredSuccursales.length > 0){
-        res.send(JSON.stringify(filteredSuccursales))
+        res.send(filteredSuccursales)
     }
 })
-.catch(error => reject(error))
+.catch(error => res.send(error))
       
 });
 
@@ -46,7 +46,7 @@ router.post('/succursale-liste', (req, res) => {
 // Ajout ou modification d'une succursale
 router.post('/succursale-ajout', (req, res) => {
   let newSuccursale = {
-    "matricule": req.body.aut.substring(0, 7),
+    "matricule": req.body.matricule,
     "ville": req.body.ville,
     "budget": req.body.budget
   }
@@ -92,7 +92,7 @@ router.delete("/succursale-retrait", (req, res) => {
 
 // Delete TOUTES les succursales
 router.delete("/succursale-suppression", (req, res) => {
-  const matricule = req.body.aut.substring(0, 7);
+  const matricule = req.body.matricule
   deleteAllSuccursales(matricule)
     .then(obj => {
       if (obj) {

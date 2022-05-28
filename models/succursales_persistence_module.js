@@ -91,15 +91,22 @@ const updateSuccursale = (succursale) => {
     return objPromise
 }
 
-const deleteSuccursale = succursale => {
+const deleteSuccursale = obj => {
     const objPromise = new Promise((resolve, reject) => {
         getSuccursales()
             .then(objSuccursales => {
-                //Check for duplicates
-                objSuccursales.succursales = objSuccursales.succursales
-                    .filter(current => current.matricule !== succursale.matricule)
-                    .filter(current => current.ville !== succursale.ville)
-
+                // var index = objSuccursales.succursales.findIndex(succursale => {
+                //     return (succursale.matricule === obj.matricule && succursale.ville == obj.ville)
+                // })
+                var tab = objSuccursales.succursales
+                for(var i =0; i< tab.length; i++) {
+                    if(tab[i].matricule === obj.matricule) {
+                        if(tab[i].ville === obj.ville) {
+                            objSuccursales.succursales.splice(i, 1)
+                        }
+                    }
+                }
+                
                 //persists the filtered students after removing
                 saveSuccursales(objSuccursales)
                 resolve(succursale)
@@ -115,15 +122,18 @@ const deleteAllSuccursales = matricule => {
         getSuccursales()
             .then(objSuccursales => {
                 //Check for duplicates
-                let tabSuccursales = objSuccursales.succursales
-                for (let i = 0; i < tabSuccursales.length; i++) {
-                    if (tabSuccursales[i].matricule === matricule) {
-                        tabSuccursales.splice(i, 1)
-                    }
-                }
-                objSuccursales.succursales = tabSuccursales
-                //persists the filtered students after removing
-                saveSuccursales(objSuccursales)
+                // let tabSuccursales = objSuccursales.succursales
+                // for (let i = 0; i < tabSuccursales.length; i++) {
+                //     if (tabSuccursales[i].matricule === matricule) {
+                //         tabSuccursales.splice(i, 1)
+                //     }
+                // }
+                // objSuccursales.succursales = tabSuccursales
+                // console.log(objSuccursales);                
+                 objSuccursales.succursales = objSuccursales.succursales.filter(succursale => succursale.matricule !== matricule);
+                
+                
+                saveSuccursales(objSuccursales)                
                 resolve(objSuccursales)
             })
             .catch(error => reject(error))

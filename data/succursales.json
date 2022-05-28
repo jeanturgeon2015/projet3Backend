@@ -9,6 +9,36 @@
             "matricule": "0033245",
             "ville": "Laval",
             "budget": "200000"
+        },
+        {
+            "matricule": "3011111",
+            "ville": "test2",
+            "budget": "1134"
+        },
+        {
+            "matricule": "0033245",
+            "ville": "test3",
+            "budget": "33333"
+        },
+        {
+            "matricule": "3011111",
+            "ville": "test4",
+            "budget": "122334"
+        },
+        {
+            "matricule": "0033245",
+            "ville": "test5",
+            "budget": "700"
+        },
+        {
+            "matricule": "0033245",
+            "ville": "test6",
+            "budget": "900"
+        },
+        {
+            "matricule": "0033245",
+            "ville": "test7",
+            "budget": "1254"
         }
     ]
 }
