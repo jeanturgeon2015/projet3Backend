@@ -1,6 +1,5 @@
 var express = require('express');
-const { compileETag } = require('express/lib/utils');
-const { getStudentByMatricule } = require('../models/student_persistence_module')
+const { getStudentByMatricule, addStudent } = require('../models/student_persistence_module')
 var router = express.Router();
 
 
@@ -29,6 +28,24 @@ router.post('/', (req, res) => {
                 res.send(err)  
             }            
         });
+});
+
+router.post('/students-ajout', (req, res) => {    
+    const objStudent = {
+        "matricule": req.body.matricule,
+        "firstname": req.body.firstname,
+        "lastname": req.body.lastname,
+        "password": req.body.password
+    }
+    addStudent(objStudent)
+    .then(obj => {
+        if(obj) {
+            res.send("OK")
+        } else {
+            res.send("Erreur")
+        }
+    })
+    .catch(error => console.log(error))    
 });
 
 

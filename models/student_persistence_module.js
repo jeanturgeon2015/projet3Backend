@@ -5,10 +5,10 @@ const path = require('path')
 const getStudents = () => {
     const objPromise = new Promise((resolve, reject) => {
         fs.readFile("./data/students.json", "utf-8", (error, jsonData) => {
-            if (!error) {
+            if (!error) {                
                 resolve(JSON.parse(jsonData))
             } else {
-                reject({ error })
+                reject({error: "Erreur dans getStudents" })
             }
         })
     })
@@ -37,7 +37,7 @@ const getStudentByMatricule = (mat) => {
 //persist students data in file
 const saveStudents = (students) => {
     const objPromise = new Promise((resolve, reject) => {
-        fs.writeFile(path.join(__dirname, 'data/students.json'), JSON.stringify(students), error =>{
+        fs.writeFile('./data/students.json', JSON.stringify(students), error =>{
             if(error){
                 reject(error)
             }else{
@@ -51,18 +51,20 @@ const saveStudents = (students) => {
 //Insert a student into students.json file
 const addStudent = (student) => {
     const objPromise = new Promise((resolve, reject) => {
+        console.log(student)
         getStudents()
             .then(objStudents => {               
                 //Check for duplicates
                 const duplicateStudents = objStudents.students.
-                    filter(current => current.id === student.id)
+                    filter(current => current.matricule === student.matricule)
 
                 //persists the students if no duplicates
                 if(duplicateStudents.length === 0){
-                    objStudents.students.push(student)
+                    objStudents.students.push(student)                    
+
                     saveStudents(objStudents)
-                    resolve(student)
-                }
+                    resolve(student)                    
+                } 
             })
             .catch(error => reject(error))
     })
@@ -77,7 +79,7 @@ const deleteStudent = student => {
             .then(objStudents => {               
                 //Check for duplicates
                 objStudents.students = objStudents.students.
-                    filter(current => current.id !== student.id)
+                    filter(current => current.matricule !== student.matricule)
 
                 //persists the filtered students after removing
                 saveStudents(objStudents)
@@ -96,7 +98,7 @@ const updateStudent = (student) => {
             .then(objStudents => {
                 objStudents.students = objStudents.students.
                     map(current => {
-                        if(current.id === student.id){
+                        if(current.matricule === student.matricule){
                             return student
                         }else{
                             return current
