@@ -106,10 +106,10 @@ const deleteSuccursale = obj => {
                         }
                     }
                 }
-                
+                // console.log(objSuccursales)
                 //persists the filtered students after removing
                 saveSuccursales(objSuccursales)
-                resolve(succursale)
+                resolve(objSuccursales)
             })
             .catch(error => reject(error))
     })

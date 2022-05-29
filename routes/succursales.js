@@ -81,13 +81,11 @@ router.post('/succursale-ajout', (req, res) => {
 //Delete UNE succursale
 router.delete("/succursale-retrait", (req, res) => {
   deleteSuccursale(req.body)
-    .then(succursale => {
-      if (succursale) {
-        res.send("OK;");
-      } else {
-        res.send("PASOK;");
-      }
-    });
+    .then(obj => {
+      const nb = obj.succursales.filter(succursale => succursale.matricule === req.body.matricule)
+      res.send(`${nb.length}`)      
+    })
+    .catch(err => res.send(err))
 });
 
 // Delete TOUTES les succursales
@@ -95,9 +93,8 @@ router.delete("/succursale-suppression", (req, res) => {
   const matricule = req.body.matricule
   deleteAllSuccursales(matricule)
     .then(obj => {
-      if (obj) {
-        res.send("OK;")
-      }
+      const nb = obj.succursales.filter(succursale => succursale.matricule === req.body.matricule)
+      res.send(`${nb.length}`)      
 
     });
 });
@@ -105,14 +102,15 @@ router.delete("/succursale-suppression", (req, res) => {
 //afficher le budget d'une succursale
 router.post("/succursale-budget", (req, res) => {
   let objToGetBudget = {
-    "matricule": req.body.aut.substring(0, 7),
+    "matricule": req.body.matricule,
     "ville": req.body.ville
   }
   getBudget(objToGetBudget)
     .then(obj => {
       if (obj) {        
         res.send(`${obj.budget}`);
-      } else {
+      } 
+      else {
         res.send("PASOK;")
       }
     });
